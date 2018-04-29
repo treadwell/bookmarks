@@ -1,0 +1,25 @@
+Server
+- Validation
+- Pagination, filtering, sorting, etc.
+
+Client
+- Login
+- Register
+- Main view
+    - Search box
+    - Dropdown for choosing sort order and asc/desc
+    - Button to open the tag filter selector
+    - Settings button
+    - List of bookmarks
+- Tag filter selector
+    - Back button
+    - Search box
+    - Dropdown for choosing sort order and asc/desc
+    - And/or combination
+    - Clear button
+    - List of tags (click a tag to select/deselect it for
+      use in filtering)
+
+Infrastructure
+- Laptop shouldn't sleep when closed
+- Port forwarding
