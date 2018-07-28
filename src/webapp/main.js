@@ -17,12 +17,17 @@ function vToolbar (state, $update) {
             }).then(() =>
                $update({ view: "signin" }))
         }}}, "Sign out"),
+        h("button", {on: {click: () => {
+            state.view = "add"
+            $update(state)
+        }}}, "Add"),
         h("hr")
     ])
 }
 
 function vBody ({ loading, bookmarks, tags }, $update) {
     if (loading) return vLoading()
+    console.log(bookmarks)
     return h("div", bookmarks.map(({ url, name, tagIDs }) =>
         h("div", [
             h("div", name),
