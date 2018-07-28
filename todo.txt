@@ -1,25 +1,67 @@
-Server
+- Add/Edit/Delete a bookmark (without tags)
+- Tags
+    - Edit tags when editing bookmark
+    - View by tag (or tags)
 - Validation
-- Pagination, filtering, sorting, etc.
+- Styling
+- Sort bookmarks and tags
 
-Client
-- Login
-- Register
-- Main view
-    - Search box
-    - Dropdown for choosing sort order and asc/desc
-    - Button to open the tag filter selector
-    - Settings button
-    - List of bookmarks
-- Tag filter selector
-    - Back button
-    - Search box
-    - Dropdown for choosing sort order and asc/desc
-    - And/or combination
-    - Clear button
-    - List of tags (click a tag to select/deselect it for
-      use in filtering)
+Main View
 
-Infrastructure
-- Laptop shouldn't sleep when closed
-- Port forwarding
+=============================
+| Search box        | + | . | <= drop down (signout, show archived, edit tags), + to add bookmark
+=============================
+| Bookmark 1        | edit  | <= edit button to open editor (duh)
+| www.bookmark1.com | del   | <= del to archive
+-----------------------------
+| Bookmark 2        | edit  |
+| www.bookmark2.com | del   |
+-----------------------------
+| Bookmark 3        | edit  |
+| www.bookmark3.com | del   |
+-----------------------------
+
+
+Edit View
+
+===========================
+| <= Edit/new      (SAVE) |
+===========================
+| Name                    |
+| =====================
+| | Better than goo   |
+| =====================
+| URL
+| =====================
+| | https://duckduc   |
+| =====================
+| Tags (3 selected)
+|----------------------
+| ta                |
+|======================
+| + add tag "ta"    |
+|----------------------
+| tag1            ✓ |
+|----------------------
+| tag2              |
+|----------------------
+| tag4            ✓ |
+|----------------------
+
+           (SAVE)
+
+
+>  Settings (LATER)
+>
+>  =============================
+>  | <= Settings      Sign-out |
+>  =============================
+>  | Bookmark 1        | edit  |
+>  | www.bookmark1.com |       |
+>  -----------------------------
+>  | Bookmark 2        | edit  |
+>  | www.bookmark2.com |       |
+>  -----------------------------
+>  | Bookmark 3        | edit  |
+>  | www.bookmark3.com |       |
+>  -----------------------------

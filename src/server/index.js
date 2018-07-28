@@ -41,7 +41,6 @@ MongoClient.connect(url, function(err, client) {
             if (user) {
                 response.status(409).end()
             } else {
-                console.log(username, password)
                 bcrypt.hash(password, 10, (e, encryptedPass) => {
                     if (e) {throw(e)}
                     const user = {
@@ -64,6 +63,7 @@ MongoClient.connect(url, function(err, client) {
             if (user) {
                 const encryptedPass = user.password
                 bcrypt.compare(password, encryptedPass, (e, isMatch) => {
+                    if (e) {throw(e)}
                     if (isMatch) {
                         bcrypt.hash(uuid.v4() + (new Date()).getTime(), 10, (e, token) => {
                             cache.set(token, user._id.toString(), (e) => {
@@ -130,7 +130,7 @@ MongoClient.connect(url, function(err, client) {
         const bookmark = {
             name, url, tagIDs,
             userID: request.user._id,
-            created: new Date(Date.now())
+            created: new Date(Date.UTC())
         }
         bookmarks.insert(bookmark, (e) => {
             if (e) {throw(e)}
@@ -142,23 +142,21 @@ MongoClient.connect(url, function(err, client) {
 
     private.post("/bookmark/update", (request, response) => {
         let { _id, name, url, tagIDs } = request.body
-        if (tagIDs) {
+        if (tagIDs)
             tagIDs = tagIDs.map(t => ObjectId(t))
-        }
-        const bookmark = {
-            _id: ObjectId(_id),
+        const bookmarkUpdate = {
             name, url, tagIDs,
-            userID: request.user._id,
-            created: new Date(Date.UTC())
+            modified: new Date(Date.UTC())
         }
-        bookmarks.updateOne(
-            { _id: bookmark._id },
-            { $set: bookmark },
-            (e) => {
+        bookmarks.findOneAndUpdate(
+            { _id: ObjectId(_id) },
+            { $set: bookmarkUpdate },
+            { returnOriginal: false },
+            (e, updatedBookmark) => {
                 if (e) {throw(e)}
                 response
                     .status(200)
-                    .send(bookmark)
+                    .send(updatedBookmark)
             })
     })
 
@@ -190,11 +188,11 @@ MongoClient.connect(url, function(err, client) {
     })
 
     private.post("/tag/add", (request, response) => {
-        const { name, url } = request.body
+        const { name } = request.body
         const tag = {
             name,
             userID: request.user._id,
-            created: new Date(Date.now())
+            created: new Date(Date.UTC())
         }
         tags.insert(tag, (e) => {
             if (e) {throw(e)}
@@ -206,20 +204,19 @@ MongoClient.connect(url, function(err, client) {
 
     private.post("/tag/update", (request, response) => {
         const { _id, name } = request.body
-        const tag = {
-            _id: ObjectId(_id),
+        const tagUpdate = {
             name,
-            userID: request.user._id,
-            created: new Date(Date.UTC())
+            modified: new Date(Date.UTC())
         }
-        tags.updateOne(
-            { _id: tag._id },
-            { $set: tag },
-            (e) => {
+        tags.findOneAndUpdate(
+            { _id: ObjectId(_id) },
+            { $set: tagUpdate },
+            { returnOriginal: false },
+            (e, updatedTag) => {
                 if (e) {throw(e)}
                 response
                     .status(200)
-                    .send(tag)
+                    .send(updatedTag)
             })
     })
 
@@ -261,9 +258,9 @@ MongoClient.connect(url, function(err, client) {
 
     function requireAuth (boolean) {
         if (boolean) {
-            return(passIfAuthenticated)
+            return passIfAuthenticated
         } else {
-            return(rejectIfAuthenticated)
+            return rejectIfAuthenticated
         }
     }
 
@@ -287,4 +284,4 @@ MongoClient.connect(url, function(err, client) {
         }
     }
 
-});
+})
